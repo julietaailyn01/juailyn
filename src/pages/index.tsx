@@ -2,24 +2,75 @@ import { Box, Heading, VStack, Text, Container, SimpleGrid, Link, Input, Textare
 import { motion, useTransform, useViewportScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaGithub, FaBootstrap, FaLinkedin, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
+import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaGithub, FaBootstrap, FaLinkedin, FaWhatsapp, FaEnvelope, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { SiTypescript, SiRedux, SiNextdotjs, SiChakraui, SiKotlin, SiTailwindcss } from 'react-icons/si';
 import TypingEffect from '@/components/TypingEffect';
 import CustomButton from '@/components/customButton';
+import Timeline from '@/components/timeLine';
+import SkillsSection from '@/components/skillsSection';
 
 const ParallaxBox = motion(Box);
 const MotionBox = motion(Box);
 const MotionImage = motion(Image);
 
+const projects = [
+  { 
+    id: 1, 
+    link: 'https://pelis-lista.vercel.app/', 
+    image: '/images/peli.png', 
+    title: 'Pelis Lista', 
+    description: 'Organiza tus películas favoritas de manera intuitiva y elegante. Con Pelis Lista, puedes añadir, clasificar y buscar títulos en un solo lugar, convirtiendo tu experiencia cinematográfica en algo personalizado y fácil de gestionar.' 
+  },
+  { 
+    id: 2, 
+    link: '', 
+    image: '/images/horoscopo destino.png', 
+    title: 'Horóscopo App', 
+    description: 'Descubre tu destino con la Horóscopo App, una aplicación móvil disponible en Play Store que ofrece predicciones diarias personalizadas según tu signo zodiacal. Navega tu día con la sabiduría de las estrellas directamente en tu bolsillo.' 
+  },
+  { 
+    id: 3, 
+    link: '', 
+    image: '/images/nomada digital.png', 
+    title: 'Nómada Digital', 
+    description: 'Explora el mundo de las aplicaciones desarrolladas por Nómada Digital. Esta plataforma es tu ventana a un portafolio de proyectos, con todas las aplicaciones creadas, detalles de contacto y más, todo en un solo lugar.' 
+  },
+  { 
+    id: 4, 
+    link: '', 
+    image: '/images/poketrivia.png', 
+    title: 'Poke Trivia', 
+    description: 'Descarga Poke Trivia en la Play Store y pon a prueba tu conocimiento del universo Pokémon. Esta aplicación móvil ofrece un desafío divertido para fans de todas las edades, con preguntas y retos que te mantendrán enganchado.' 
+  },
+  { 
+    id: 5, 
+    link: '', 
+    image: '/images/cancion y letra.png', 
+    title: 'Canción y Letra', 
+    description: 'Encuentra las letras de tus canciones favoritas con Canción y Letra. Explora un vasto catálogo de canciones y canta al ritmo de tus artistas preferidos, todo en una aplicación fácil de usar.' 
+  },
+  { 
+    id: 6, 
+    link: '', 
+    image: '/images/refrimarket.png', 
+    title: 'Refrimarket', 
+    description: 'Gestiona el inventario de tu negocio con Refrimarket, un sistema de gestión de stock creado para emprendedores. Este software simplifica el control de inventarios, facilitando la administración y el crecimiento de tu empresa.' 
+  },
+];
+
+
 const Home = () => {
   const { scrollY } = useViewportScroll();
+  const [showAll, setShowAll] = useState(false);
+  const visibleProjects = showAll ? projects : projects.slice(0, 3);
+
+  const toggleShowAll = () => setShowAll(!showAll);
   
 
   // Efecto parallax en las secciones
-  const yBackground = useTransform(scrollY, [700, 1100], [0, 0]);
   const yForeground = useTransform(scrollY, [500, 1100], [-400, 0]);
-  const yBackground2 = useTransform(scrollY, [3500, 3800], [0, 0]); // Fondo estático
-  const yForeground2 = useTransform(scrollY, [3500, 3800], [-300, 0]);
+  const yBackground2 = useTransform(scrollY, !showAll? [2200, 2500] : [3200, 3500], [0, 0]);
+  const yForeground2 = useTransform(scrollY, !showAll? [2200, 2500] : [3200, 3500], [-300, 0]);
 
   const { ref, inView } = useInView({
     triggerOnce: false,
@@ -167,78 +218,67 @@ const Home = () => {
 
         {/* Sección Proyectos */}
         <Box
-          ref={ref}
-          bgColor="pink.50"
-          mb={20}
-          py={20}
-          borderY="1px solid white"
+      bgColor="pink.50"
+      borderRadius="16px"
+      mb={20}
+      py={20}
+      borderY="1px solid white"
+      h="fit-content"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Heading as="h2" size="xl" fontFamily="'Courier Prime', monospace" mb={8}>Proyectos</Heading>
+      
+      {visibleProjects.map((project, index) => (
+        <MotionBox
+          key={project.id}
+          justifyContent="space-between"
           h="fit-content"
+          mb={16}
           display="flex"
-          flexDirection="column"
+          flexDirection={index % 2 === 0 ? 'row' : 'row-reverse'}
           alignItems="center"
-          justifyContent="center"
+          initial="initial"
+          animate="visible"
+          whileHover="hover"
+          variants={imageVariants(index)}
+          transition={{ duration: 0.5, type: 'spring' }}
         >
-          <Heading as="h2" size="xl" fontFamily="'Courier Prime', monospace"  mb={8}>Proyectos</Heading>
-          {[{
-            id: 1, link: 'https://pelis-lista.vercel.app/', image: '/images/peli.png', title: 'Pelis Lista', description: 'Aplicación para organizar películas.'
-          }, 
-          {
-            id: 2, link: '', image: '/images/horoscopo destino.png', title: 'Horóscopo App', description: 'Consulta diaria de horóscopos.'
-          },
-          
-          {
-            id: 3, link: '', image: '/images/nomada digital.png', title: 'Nomada Digital', description: 'Plataforma de servicios de desarrollo.'
-          },
-          {
-            id: 4, link: '', image: '/images/poketrivia.png', title: 'Poke Trivia', description: 'Juego de trivia sobre Pokémon.'
-          },
-          {
-            id: 5, link: '', image: '/images/cancion y letra.png', title: 'Canción y Letra', description: 'App para encontrar letras de canciones.'
-          },
-          {
-            id: 6, link: '', image: '/images/refrimarket.png', title: 'Refrimarket', description: 'Tienda en línea de electrodomésticos.'
-          },
-           
-          ].map((project, index) => (
-            <MotionBox
-              key={project.id}
-              justifyContent="space-between"
-              h="fit-content"
-              mb={16}
-              gap={8}
-              display="flex"
-              flexDirection={index % 2 === 0 ? 'row' : 'row-reverse'}
-              alignItems="center"
-              initial="initial"
-              animate="visible"
-              whileHover="hover"
-              variants={imageVariants(index)}
-              transition={{ duration: 0.5, type: 'spring' }}
-            >
-              <MotionImage
-                src={project.image}
-                alt={`Proyecto ${project.id}`}
-                objectFit="cover"
-                w="40%"
-                h="50%"
-                borderRadius={20}
-                boxShadow="20px 20px 40px rgba(255, 255, 255, 0.2)"
-                initial="initial"
-                whileHover="hover"
-                variants={imageVariants(index)}
-                transition={{ duration: 0.5, type: 'spring' }}
-              />
-              <VStack spacing={4} p={4} w="50%" alignItems={index % 2 === 0 ? 'flex-start' : 'flex-end'}>
-                <Heading size="md" textAlign="start">{project.title}</Heading>
-                <Text>{project.description}</Text>
-                <Link href={project.link} isExternal>
-                <CustomButton text='Visitar' />
-                  {/* <Button variant="solid" colorScheme="teal">Visitar</Button> */}
-                </Link>
-              </VStack>
-            </MotionBox>
-          ))}
-        </Box>
+          <MotionImage
+            src={project.image}
+            alt={`Proyecto ${project.id}`}
+            objectFit="cover"
+            w="40%"
+            h="50%"
+            borderRadius={20}
+            boxShadow="20px 20px 40px rgba(255, 255, 255, 0.2)"
+            initial="initial"
+            whileHover="hover"
+            variants={imageVariants(index)}
+            transition={{ duration: 0.5, type: 'spring' }}
+          />
+          <VStack spacing={4} p={4} w="50%" alignItems="flex-start"  borderRadius={16} boxShadow="20px 20px 40px rgba(0, 0, 0, 0.4)">
+  <Heading size="md" textAlign="start" fontFamily="'Playfair Display', serif">
+    {project.title}
+  </Heading>
+  <Text fontSize="lg" fontFamily="'Lora', serif">
+    {project.description}
+    
+  </Text>
+  <Link href={project.link} isExternal alignSelf="center">
+    <CustomButton text='Visitar' />
+  </Link>
+  <Box mt={2} as="span" display="inline-block" w="100%" textAlign="center" fontSize="lg" fontFamily="'Lora', serif">
+      ~ * ~
+    </Box>
+</VStack>
+        </MotionBox>
+      ))}
+
+      <CustomButton icon={showAll ? <FaChevronUp /> : <FaChevronDown />} onClick={toggleShowAll}/>
+    </Box>
 
         {/* Efecto Parallax 2 */}
         <Box 
@@ -277,95 +317,118 @@ const Home = () => {
         </Box>
 
         {/* Sección Experiencia Profesional */}
-        <Box h="100vh" display="flex" alignItems="center" justifyContent="space-between">
-          <Box w="50%">
-          <VStack alignItems="flex-start" spacing={6}>
-  <Box>
-    <Heading size="md">2022 - Actualidad</Heading>
-    <Text fontSize="lg">
-      <strong>Desarrolladora Full Stack - Frávega</strong>
-      <br />
-      Trabajo en el desarrollo y mantenimiento de aplicaciones tanto front end como back end, con un enfoque especial en la optimización de la experiencia de usuario y la implementación de soluciones escalables. Uso tecnologías como React, Redux, Node.js, y microservicios para asegurar que las plataformas sean robustas, seguras y fáciles de usar.
-    </Text>
-  </Box>
+        <Box display="flex" gap={5} alignItems="center" justifyContent="space-between">
+          
+        <Timeline/>
 
-  <Box>
-    <Heading size="md">2021 - 2022</Heading>
-    <Text fontSize="lg">
-      <strong>Desarrolladora Front End - ABC Dinamic Technologies</strong>
-      <br />
-      Participé en el desarrollo de interfaces de usuario para aplicaciones empresariales utilizando React y TypeScript. Colaboré con equipos de diseño para implementar interfaces responsive y accesibles, mejorando significativamente la experiencia de usuario en las plataformas de nuestros clientes.
-    </Text>
-  </Box>
 
-  <Box>
-    <Heading size="md">2020 - 2021</Heading>
-    <Text fontSize="lg">
-      <strong>Desarrolladora Junior - Deftecnic</strong>
-      <br />
-      Inicié mi carrera trabajando en proyectos de desarrollo web utilizando HTML, CSS, y JavaScript. Colaboré en la creación de componentes reutilizables y en la optimización de sitios web para mejorar la velocidad de carga y la accesibilidad.
-    </Text>
-  </Box>
-</VStack>
+<SkillsSection/>
 
-          </Box>
-          <Box w="50%" display="flex" justifyContent="center" onMouseMove={handleMouseMove}>
-            <Box 
-              w="400px" 
-              h="400px" 
-              position="relative" 
-              borderRadius="50%" 
-              bg="rgba(255, 255, 255, 0.1)" 
-              overflow="hidden" 
-              display="flex" 
-              alignItems="center" 
-              justifyContent="center"
-            >
-              {skills.map((skill, index) => {
-                const Icon = skill.icon;
-                const angle = (index / skills.length) * 360;
-                const x = 150 * Math.cos((angle * Math.PI) / 180);
-                const y = 150 * Math.sin((angle * Math.PI) / 180);
-                return (
-                  <MotionBox
-                    key={index}
-                    position="absolute"
-                    top={`calc(50% + ${y}px)`}
-                    left={`calc(50% + ${x}px)`}
-                    transform="translate(-50%, -50%)"
-                    animate={{
-                      x: mousePosition.x / 30,
-                      y: mousePosition.y / 30,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeOut",
-                    }}
-                  >
-                    <Icon color={skill.color} size="40px" />
-                  </MotionBox>
-                );
-              })}
-            </Box>
-          </Box>
         </Box>
 
         {/* Sección Contacto */}
-        <Box h="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" bg="rgba(0, 0, 0, 0.5)" color="white">
-          <Heading as="h2" size="xl" mb={8}>Contacto</Heading>
-          <VStack spacing={4} w="50%">
-            <Input placeholder="Tu nombre" variant="filled" />
-            <Input placeholder="Tu correo electrónico" variant="filled" />
-            <Textarea placeholder="Tu mensaje" variant="filled" />
-            <Button colorScheme="teal">Enviar</Button>
-          </VStack>
-          <SimpleGrid columns={4} spacing={10} mt={8}>
-            <Link href="https://github.com/" isExternal><FaGithub size="40px" /></Link>
-            <Link href="https://www.linkedin.com/" isExternal><FaLinkedin size="40px" /></Link>
-            <Link href="mailto:julietaailyn01@gmail.com" isExternal><FaEnvelope size="40px" /></Link>
-            <Link href="https://wa.me/1132610111" isExternal><FaWhatsapp size="40px" /></Link>
-          </SimpleGrid>
-        </Box>
+        <Box 
+  h="100vh" 
+  display="flex" 
+  flexDirection="column" 
+  alignItems="center" 
+  justifyContent="center" 
+  p={8}
+  borderRadius="16px"
+>
+  <Heading as="h2" size="2xl" mb={8} fontFamily="'Playfair Display', serif" color="#fd9395">
+    Contáctame
+  </Heading>
+  <VStack spacing={4} w="50%">
+    <Input 
+      placeholder="Tu nombre" 
+      variant="filled" 
+      bg="rgba(253, 147, 149, 0.1)"
+      borderColor="transparent"
+      focusBorderColor="#fd9395"
+      _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+      borderRadius="12px"
+      color="#4b643b"
+      fontFamily="'Lora', serif"
+    />
+    <Input 
+      placeholder="Tu correo electrónico" 
+      variant="filled" 
+      bg="rgba(253, 147, 149, 0.1)"
+      borderColor="transparent"
+      focusBorderColor="#fd9395"
+      _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+      borderRadius="12px"
+      color="#4b643b"
+      fontFamily="'Lora', serif"
+    />
+    <Textarea 
+      placeholder="Tu mensaje" 
+      variant="filled" 
+      bg="rgba(253, 147, 149, 0.1)"
+      borderColor="transparent"
+      focusBorderColor="#fd9395"
+      _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+      borderRadius="12px"
+      color="#4b643b"
+      fontFamily="'Lora', serif"
+    />
+    <CustomButton text="Enviar" />
+  </VStack>
+  <SimpleGrid columns={4} spacing={10} mt={8}>
+    <Link href="https://github.com/" isExternal>
+      <Box 
+        p={3} 
+        bg="rgba(253, 147, 149, 0.1)" 
+        borderRadius="50%" 
+        _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+        transition="all 0.3s ease"
+        color="#fd9395"
+      >
+        <FaGithub size="40px" />
+      </Box>
+    </Link>
+    <Link href="https://www.linkedin.com/" isExternal>
+      <Box 
+        p={3} 
+        bg="rgba(253, 147, 149, 0.1)" 
+        borderRadius="50%" 
+        _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+        transition="all 0.3s ease"
+        color="#fd9395"
+      >
+        <FaLinkedin size="40px" />
+      </Box>
+    </Link>
+    <Link href="mailto:julietaailyn01@gmail.com" isExternal>
+      <Box 
+        p={3} 
+        bg="rgba(253, 147, 149, 0.1)" 
+        borderRadius="50%" 
+        _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+        transition="all 0.3s ease"
+        color="#fd9395"
+      >
+        <FaEnvelope size="40px" />
+      </Box>
+    </Link>
+    <Link href="https://wa.me/1132610111" isExternal>
+      <Box 
+        p={3} 
+        bg="rgba(253, 147, 149, 0.1)" 
+        borderRadius="50%" 
+        _hover={{ bg: "rgba(253, 147, 149, 0.2)" }}
+        transition="all 0.3s ease"
+        color="#fd9395"
+      >
+        <FaWhatsapp size="40px" />
+      </Box>
+    </Link>
+  </SimpleGrid>
+</Box>
+
+
+
       </Container>
     </Box>
   );
