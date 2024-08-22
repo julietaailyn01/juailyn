@@ -328,12 +328,13 @@ const Home = () => {
 
         {/* Sección Contacto */}
         <Box 
-  h="100vh" 
+        h="90vh"
   display="flex" 
   flexDirection="column" 
   alignItems="center" 
   justifyContent="center" 
   p={8}
+
   borderRadius="16px"
 >
   <Heading as="h2" size="2xl" mb={8} fontFamily="'Playfair Display', serif" color="#fd9395">

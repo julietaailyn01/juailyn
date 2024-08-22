@@ -23,7 +23,7 @@ const Sphere3D = () => {
 
   useEffect(() => {
     const sphere = sphereRef.current;
-    if (!sphere) return; // Verificación para asegurarse de que sphere no sea null
+    if (!sphere) return;
 
     const radius = 150;
     const total = skills.length;
@@ -55,16 +55,17 @@ const Sphere3D = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = (e.clientX / window.innerWidth - 0.5) * 180;
-      mouse.y = (e.clientY / window.innerHeight - 0.5) * 180;
+      const rect = sphere.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width - 0.5) * 100;
+      mouse.y = ((e.clientY - rect.top) / rect.height - 0.5) * 100;
     };
 
     positionElements();
     rotateSphere();
-    window.addEventListener('mousemove', handleMouseMove);
+    sphere.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      sphere.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
@@ -105,7 +106,7 @@ const Sphere3D = () => {
 const SkillsSection = () => {
   return (
     <Box 
-    h="100%"
+      h="100%"
       display="flex" 
       flexDirection="column" 
       alignItems="center" 
@@ -135,3 +136,4 @@ const SkillsSection = () => {
 };
 
 export default SkillsSection;
+
