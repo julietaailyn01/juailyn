@@ -4,9 +4,10 @@ interface CustomButtonProps {
   text?: string;
   icon?: React.ReactNode;
   onClick?: () => void;
+  issubmit?: boolean;
 }
 
-const CustomButton = ({ text, icon, onClick }: CustomButtonProps) => {
+const CustomButton = ({issubmit= false, text, icon, onClick }: CustomButtonProps) => {
   return (
     <Box position="relative" display="inline-block">
       <Button
@@ -40,6 +41,7 @@ const CustomButton = ({ text, icon, onClick }: CustomButtonProps) => {
         _active={{
           transform: 'scale(0.98)',
         }}
+        type={issubmit ? 'submit' : 'button'}	
       >
         {icon ? icon : text}
       </Button>

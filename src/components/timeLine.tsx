@@ -1,38 +1,39 @@
 import { Box, Heading, VStack, Text, Container, Flex } from '@chakra-ui/react';
 import { FaCircle } from 'react-icons/fa';
+import { FormattedMessage } from 'react-intl';
 
 const experiences = [
   {
-    date: 'Mayo 2023 - Actualidad',
-    title: 'Desarrolladora Front-End',
-    company: 'BECHSUD ARGENTINA',
-    location: 'Argentina (Híbrido)',
-    description:
-      'Mantenimiento y actualización del sitio web de la empresa, implementando mejoras y optimizando el rendimiento para una mejor experiencia de usuario.',
+    id: 1,
+    dateId: 'experience1.date',
+    titleId: 'experience1.title',
+    companyId: 'experience1.company',
+    locationId: 'experience1.location',
+    descriptionId: 'experience1.description',
   },
   {
-    date: 'Mayo 2021 - Sept. 2022',
-    title: 'Programadora Full Stack',
-    company: 'Argenmining',
-    location: 'Buenos Aires, Argentina (Híbrido)',
-    description:
-      'Lideré el desarrollo de una plataforma integral para control de equipos, usando React, Node.js y TypeScript. También diseñé la web de la empresa y material publicitario.',
+    id: 2,
+    dateId: 'experience2.date',
+    titleId: 'experience2.title',
+    companyId: 'experience2.company',
+    locationId: 'experience2.location',
+    descriptionId: 'experience2.description',
   },
   {
-    date: 'Marzo 2012 - Abril 2020',
-    title: 'Diseñadora Gráfica',
-    company: 'Estetica M&A',
-    location: 'Buenos Aires, Argentina (Presencial)',
-    description:
-      'Diseñé el logo, tarjetas y publicidad para redes sociales, contribuyendo al aumento de la presencia en línea del centro.',
+    id: 3,
+    dateId: 'experience3.date',
+    titleId: 'experience3.title',
+    companyId: 'experience3.company',
+    locationId: 'experience3.location',
+    descriptionId: 'experience3.description',
   },
   {
-    date: 'Noviembre 2022 - Actualidad',
-    title: 'Desarrolladora de Aplicaciones Móviles',
-    company: 'Proyectos Personales',
-    location: 'Publicados en Play Store',
-    description:
-      'Creé y publiqué aplicaciones como "Poke Trivia" y "Horóscopo App" en la Play Store, alcanzando un número significativo de descargas.',
+    id: 4,
+    dateId: 'experience4.date',
+    titleId: 'experience4.title',
+    companyId: 'experience4.company',
+    locationId: 'experience4.location',
+    descriptionId: 'experience4.description',
   },
 ];
 
@@ -40,7 +41,7 @@ const Timeline = () => {
   return (
     <Container maxW="container.md" py={10}>
       <Heading as="h2" size="xl" mb={8} textAlign="center" fontFamily="'Courier Prime', monospace">
-        Experiencia Profesional
+        <FormattedMessage id="experienceTitle" defaultMessage="Experiencia Profesional" />
       </Heading>
       <Box position="relative" pl={10} _before={{
         content: '""',
@@ -52,20 +53,22 @@ const Timeline = () => {
         bgColor: 'gray.200',
       }}>
         {experiences.map((exp, index) => (
-          <Flex key={index} gap={5} mb={10} alignItems="center" position="relative">
+          <Flex key={exp.id} gap={5} mb={10} alignItems="center" position="relative">
             <Box position="absolute" left="22px">
               <FaCircle size="12px" color={index % 2 === 0 ? '#fd9395' : '#82a56d'} />
             </Box>
             <Box ml={10}>
               <Text fontSize="sm" fontWeight="bold" fontFamily="'Playfair Display', serif">
-                {exp.date}
+                <FormattedMessage id={exp.dateId} />
               </Text>
-              <Heading size="md" fontFamily="'Playfair Display', serif">{exp.title}</Heading>
+              <Heading size="md" fontFamily="'Playfair Display', serif">
+                <FormattedMessage id={exp.titleId} />
+              </Heading>
               <Text fontSize="md" fontWeight="bold" color="gray.600" fontFamily="'Lora', serif">
-                {exp.company} · {exp.location}
+                <FormattedMessage id={exp.companyId} /> · <FormattedMessage id={exp.locationId} />
               </Text>
               <Text fontSize="lg" mt={2} fontFamily="'Lora', serif">
-                {exp.description}
+                <FormattedMessage id={exp.descriptionId} />
               </Text>
             </Box>
           </Flex>

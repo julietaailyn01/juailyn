@@ -1,49 +1,50 @@
 import { useEffect, useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 
-const TypingEffect = ({ text }: { text: string }) => {
-  const [displayedText, setDisplayedText] = useState<string>(""); // Estado para el texto a mostrar
-  const [isCursorVisible, setIsCursorVisible] = useState<boolean>(true); // Estado para el cursor titilante
+interface TypingEffectProps {
+  text: string;
+}
+
+const TypingEffect = ({ text }: TypingEffectProps) => {
+  const [displayedText, setDisplayedText] = useState<string>('');
+  const [isCursorVisible, setIsCursorVisible] = useState<boolean>(true);
 
   useEffect(() => {
-    if (!text || text.length === 0) return;
-  
+    // Reiniciar el texto mostrado cada vez que cambie el texto prop
+    setDisplayedText('');
+
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
       const nextChar = text[currentIndex];
-      console.log('nextChar:', nextChar); // Depuración
       if (currentIndex < text.length && nextChar !== undefined) {
-        setDisplayedText((prev) => {
-          const newText = prev + nextChar;
-          console.log('newText:', newText); // Depuración
-          return newText;
-        });
+        setDisplayedText((prev) => prev + nextChar);
         currentIndex++;
       } else {
         clearInterval(typingInterval);
       }
     }, 100);
-  
+
     const cursorInterval = setInterval(() => {
       setIsCursorVisible((prev) => !prev);
     }, 500);
-  
+
+    // Limpiar intervalos cuando el componente se desmonta o cuando el texto cambia
     return () => {
       clearInterval(typingInterval);
       clearInterval(cursorInterval);
     };
   }, [text]);
-  
+
   return (
-    <Heading 
-      as="h1" 
-      size="2xl" 
-      fontFamily="'Courier Prime', monospace" 
-      textAlign="left" // Alineación a la izquierda
-      w="100%" // Asegura que el contenedor ocupe todo el ancho
+    <Heading
+      as="h1"
+      size="2xl"
+      fontFamily="'Courier Prime', monospace"
+      textAlign="left"
+      w="100%"
     >
       {displayedText}
-      {isCursorVisible && <span>|</span>} 
+      {isCursorVisible && <span>|</span>}
     </Heading>
   );
 };

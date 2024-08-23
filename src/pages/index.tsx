@@ -10,6 +10,9 @@ import Timeline from '@/components/timeLine';
 import SkillsSection from '@/components/skillsSection';
 import ProjectSection from '@/components/projectSection';
 import ContactSection from '@/components/contactSection';
+import { LanguageProvider } from '@/components/lenguageContext';
+import LanguageSwitcher from '@/components/lenguageSwitcher';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const ParallaxBox = motion(Box);
 
@@ -23,6 +26,8 @@ const Home = () => {
   const yForeground = useTransform(scrollY, [500, 1100], [-400, 0]);
   const yBackground2 = useTransform(scrollY, !showAll ? [2200, 2500] : [3200, 3500], [0, 0]);
   const yForeground2 = useTransform(scrollY, !showAll ? [2200, 2500] : [3200, 3500], [-300, 0]);
+  const intl = useIntl();
+  const aboutMeText = intl.formatMessage({ id: 'aboutMe', defaultMessage: 'Hola, Soy Juli♥' });
 
   const { ref, inView } = useInView({
     triggerOnce: false,
@@ -72,26 +77,40 @@ const Home = () => {
       p={0}
       overflow="hidden"
     >
+      <LanguageSwitcher/>
       <Container alignItems="center" justifyContent="center" maxW="90%" p={20}>
         {/* Sección Sobre Mí */}
-        <Box h="50vh" display="flex" alignItems="center" justifyContent="center">
-          <VStack spacing={4} w="50%">
-            <TypingEffect text="Hola, Soy Juli♥" />
+        <Box  
+          h={{ base: "auto", md: "50vh" }} 
+          display="flex"
+          flexDirection={{ base: "column", md: "row" }}
+          alignItems="center"
+          justifyContent="center"
+          textAlign={{ base: "center", md: "left" }}
+        >
+          <VStack spacing={4} w={{ base: "100%", md: "50%" }}>
+          <TypingEffect text={aboutMeText} />
             <Text
-              fontSize="xl"
-              mt={16}
-              mr={14}
+              fontSize={{ base: "md", md: "xl" }} 
+              mt={4} 
+              mr={{ base: 0, md: 14 }} 
               fontFamily="'Cormorant Garamond'"
               border="1px groove brown"
-              p={6}
+              p={4} 
               borderRadius={16}
               boxShadow="20px 20px 40px rgba(0, 0, 0, 0.4)"
             >
-              Soy Julieta Ailyn Mosquera, una apasionada desarrolladora front end con un fuerte enfoque en la creación de aplicaciones web modernas y atractivas. Con experiencia en tecnologías como React, Next.js, y TypeScript, me especializo en transformar ideas en interfaces de usuario intuitivas y responsivas. Mi objetivo es combinar un diseño estético con una funcionalidad impecable, creando experiencias digitales que cautiven a los usuarios. Siempre en busca de nuevos retos, disfruto aprendiendo y adaptándome a las últimas tendencias en desarrollo web.
+              <FormattedMessage id='aboutDescription' defaultMessage='Soy una desarrolladora web apasionada por la tecnología y el diseño. Me encanta aprender cosas nuevas y compartir conocimientos. En mi tiempo libre me gusta dibujar, leer y ver series.'/>
             </Text>
           </VStack>
 
-          <Box mt={20} w="40%" display="flex" justifyContent="center" position="relative">
+          <Box 
+            mt={{ base: 10, md: 20 }}
+            w={{ base: "80%", md: "40%" }}
+            display="flex"
+            justifyContent="center"
+            position="relative"
+          >
             {/* Caricatura Base */}
             <Image src="/images/juli anim.png" alt="Caricatura de Juli" borderRadius="lg" />
 
@@ -130,7 +149,7 @@ const Home = () => {
         </Box>
 
         <Box
-          h="900px"
+          h={{ base: "300px", md: "900px" }}
           w="fix-content"
           position="relative"
         >
@@ -188,7 +207,7 @@ const Home = () => {
         </Box>
 
         {/* Sección Experiencia Profesional */}
-        <Box display="flex" gap={5} alignItems="center" justifyContent="space-between">
+        <Box display={{base:"block", md:"flex"}} gap={5} alignItems="center" justifyContent="space-between">
           <Timeline />
           <SkillsSection />
         </Box>
